@@ -1,7 +1,7 @@
 export default {
-  name: 'koa_example',
+  name: 'koa_example_main',
   userName: 'root',
-  password: 'your_password_for_mysql',
+  password: '0000',
   options: {
     host: 'localhost',
     dialect: 'mysql',
