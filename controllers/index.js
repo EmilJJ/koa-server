@@ -1,18 +1,18 @@
 import Router from 'koa-router';
-import userController from './user.controller';
-import categoryController from './category.controller';
-import questionController from './question.controller';
+import { publicUserController, privateUserController } from './user.controller';
 
 export const configurePublicRouter = () => {
   const publicRouter = Router();
-  publicRouter.use(userController());
-  publicRouter.use(categoryController());
-  publicRouter.use(questionController());
+
+  publicRouter.use(publicUserController());
 
   return publicRouter.routes();
 };
 
 export const configurePrivatRouter = () => {
   const privatRouter = Router();
+
+  privatRouter.use(privateUserController());
+
   return privatRouter.routes();
 };

@@ -1,4 +1,4 @@
-import logger from '../services/logger.service';
+import { logger } from '../services';
 
 const errorMiddleware = () => async (ctx, next) => {
   try {

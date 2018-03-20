@@ -1,18 +1,23 @@
 import Sequelize from 'sequelize';
+import { CLIENT } from '../enums/user.types';
 import dbConnection from '../db-connection';
 
 const User = dbConnection.define('user', {
-  name: {
+  username: {
     type: Sequelize.STRING,
-    notEmpty: true,
+    allowNull: false,
   },
-  surname: {
+  email: {
     type: Sequelize.STRING,
-    notEmpty: true,
+    allowNull: false,
   },
   password: {
     type: Sequelize.STRING,
-    notEmpty: true,
+    allowNull: false,
+  },
+  type: {
+    type: Sequelize.INTEGER,
+    defaultValue: CLIENT,
   },
 });
 

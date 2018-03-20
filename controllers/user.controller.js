@@ -1,27 +1,40 @@
 import Router from 'koa-router';
-import jwt from 'jsonwebtoken';
 import codes from 'http-status-codes';
-import config from '../config/server';
-import UserService from '../services/user.service';
+import { userRegisterService, addCarService } from '../services';
 
-const createUser = async (ctx) => {
-  const { name, surname, password } = ctx.request.body;
-  const createdUser = await UserService.create({ name, surname, password });
-  ctx.response.status = codes.OK;
-  ctx.response.body = createdUser;
+const userRegister = async (ctx) => {
+  const id = await userRegisterService(ctx.request.body);
+
+  ctx.status = codes.CREATED;
+  ctx.body = { data: { id } };
 };
 
-const loginUser = async (ctx) => {
-  const user = ctx.request.body;
-  const token = jwt.sign(user, config.secretJWT);
-  ctx.status = codes.OK;
-  ctx.body = token;
+const userAddsCar = async (ctx) => {
+  const createdCar = await addCarService(ctx.request.body);
+  ctx.status = codes.CREATED;
+  ctx.body = { data: { createdCar } };
 };
 
-export default () => {
+
+const publicUserController = () => {
   const route = '/user';
   const router = Router();
-  router.post(route, createUser);
-  router.post(`${route}/login`, loginUser);
+
+  router.post(`${route}`, userRegister);
+
   return router.routes();
+};
+
+const privateUserController = () => {
+  const route = '/user';
+  const router = Router();
+
+  router.post(`${route}/add/car`, userAddsCar);
+
+  return router.routes();
+};
+
+export {
+  publicUserController,
+  privateUserController,
 };

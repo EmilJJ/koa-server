@@ -1,3 +1,16 @@
 {
-    "extends": "airbnb-base"
+    "rules": {
+      "max-len": ["error", 250],
+      "no-console": 0,
+      "no-param-reassign": 0,
+      "class-methods-use-this": 0,
+  
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ]
+    },
+    "extends": "airbnb"
 }

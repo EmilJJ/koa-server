@@ -9,8 +9,8 @@ import morgan from 'koa-morgan';
 import config from './config/server';
 import dbConnection from './db-connection';
 import errorMidleware from './middlewares/error.middleware';
-import logger from './services/logger.service';
-import { configurePublicRouter } from './controllers';
+import { logger } from './services';
+import { configurePublicRouter, configurePrivatRouter } from './controllers';
 
 const app = new Koa();
 
@@ -22,14 +22,12 @@ app.use(
 );
 app.use(morgan('tiny'));
 app.use(serve(path.resolve(__dirname, './static')));
-// app.use(async (ctx) => {
-//   await send(ctx, `/${staticForlder}/index.html`);
-// });
-app.use(errorMidleware());
-// app.use(jwt({ secret: config.secretJWT }));
-app.use(configurePublicRouter());
 
-dbConnection.sync().then(async () => {
+app.use(errorMidleware());
+app.use(configurePublicRouter());
+app.use(configurePrivatRouter());
+
+dbConnection.sync({ force: true }).then(async () => {
   await app.listen(config.port, () => {
     logger.logInfo(`Server listen on port: ${config.port}`);
   });
